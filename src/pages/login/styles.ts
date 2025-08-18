@@ -5,7 +5,7 @@ export const style = StyleSheet.create( {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
+        //padding: 20
     },
     boxTop: {
         height: 200,
