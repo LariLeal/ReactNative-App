@@ -14,10 +14,15 @@ export const style = StyleSheet.create({
         backgroundColor: themas.colors.lightGray,
         borderColor: themas.colors.lightGray
     },
-    imput: {
+    input: {
         height: '100%',
         width: '90%',
         borderRadius: 40,
         paddingLeft: 5,
+    },
+    titleInput: {
+        marginLeft: 5,
+        color: themas.colors.gray,
+        marginTop: 20
     },
 })
