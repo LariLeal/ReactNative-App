@@ -1,4 +1,4 @@
-import React, { forwardRef , Fragment, LegacyRef } from "react";
+import React, { ForwardedRef, forwardRef , Fragment,  } from "react";
 import {View, Text, TextInput, TextInputProps, TouchableOpacity} from 'react-native';
 import {style} from "./style";
 // import {MaterialIcons} from '@expo/vector-icons';
@@ -19,10 +19,19 @@ type IconComponent = React.ComponentType<React.ComponentProps< typeof MaterialIc
         OnIconRightPress ?: () => void
     }
 
-export const Input = forwardRef((Props: Props, forwardRef: LegacyRef<TextInput> | null) => {
+export const Input = forwardRef<TextInput, Props>((Props, ref: ForwardedRef<TextInput> | null) => {
     const {IconLeft, IconRight, IconLeftName, IconRightName, title, OnIconLeftPress, OnIconRightPress,
         ...rest
     } = Props
+    const calculateSizeWidt = () =>  {
+        if (IconLeft && IconRight) {
+            return '100%'
+        } else if (IconLeft || IconRight) {
+            return '100%'
+        } else {
+            return '100%'
+        }
+    }
     return (
         <Fragment>
             <Text style={ style.titleInput}>{title}</Text>

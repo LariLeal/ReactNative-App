@@ -47,6 +47,8 @@ export default function Login() {
                 value={email}
                 onChangeText={setEmail}
                 title="ENDEREÇO E-MAIL"
+                IconLeft={MaterialIcons}
+                IconLeftName="email"
                 IconRight={MaterialIcons}
                 IconRightName="email"
                 />
