@@ -8,12 +8,13 @@ import {themas} from "../../global/themes";
 import {Input} from "../../components/input";
 import {Button} from "../../components/Button";
 import {useNavigation, NavigationProp} from "@react-navigation/native";
+import BottomRoutes from "../../routes/bottom.routes";
  
 export default function Login() {
     const navigation = useNavigation<NavigationProp<any>>();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('a');
+    const [password, setPassword] = useState('a');
     const [showPassword, setShowPassword] = useState(true);
     const [loading, setLoading] = useState(false);
 
@@ -28,14 +29,6 @@ export default function Login() {
 
             console.log("Logou!!!!!!!!!!!!!!!!!!!!!");
 
-            setTimeout(() => {
-                if (email == 'lari@gmail.com' && password == '12345678') {
-                    Alert.alert('Logado com sucesso!');
-                } else {
-                    Alert.alert('Usuário não encontrado!');
-                }
-                setLoading(false)
-            }, 3000);
         } catch (error) {
             console.log(error);
         } finally {
