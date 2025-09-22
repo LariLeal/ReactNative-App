@@ -49,5 +49,11 @@ export const style = StyleSheet.create({
         alignItems: 'center',
         gap: 10
     },
-
+    titleCard: {
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    descriptionCard: {
+        color: themas.colors.gray
+    }
 })
