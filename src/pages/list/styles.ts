@@ -42,5 +42,12 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
-    }
+    },
+    rowCardLeft: {
+        width: '70%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10
+    },
+
 })
