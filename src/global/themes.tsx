@@ -4,6 +4,8 @@ export const themas = {
         seconsary: '#ffffff',
         lightGray: '#d7d8d7',
         gray: 'gray',
-        bigScreen: '#f1f7fa'
+        bigScreen: '#f1f7fa',
+        red: '#FF494C',
+        blueLight: '#87CEF6'
     }
 }
