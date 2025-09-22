@@ -25,6 +25,22 @@ export const style = StyleSheet.create({
     boxList: {
         flex: 1,
         width: '100%',
-        backgroundColor: 'red'
+       // backgroundColor: 'red'
+    },
+    card: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#FFF',
+        marginTop: 6,
+        borderRadius: 10,
+        justifyContent: 'center',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: themas.colors.lightGray
+    },
+    rowCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 })
