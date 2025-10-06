@@ -1,21 +1,22 @@
-import React, {createContext, useContext, useRef, useEffect, useState} from "react";
-import { Dimensions, Text, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from "react-native";
-import {MaterialIcons, AntDesign} from '@expo/vector-icons';
+import React, { createContext, useContext, useRef, useEffect, useState } from "react";
+import { Dimensions, Text, View, StyleSheet, Touchable, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from "react-native";
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { Modalize } from "react-native-modalize";
 import { Input } from "../components/input";
 import { themas } from "../global/themes";
 import { Flag } from "../components/Flag";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+ 
 export const AuthContextList: any = createContext({});
-
+ 
 const flags = [
-    {caption: 'Urgente', color: themas.colors.red},
-    {caption: 'Opcional', color: themas.colors.blueLight}
+    { caption: 'Urgente', color: themas.colors.red },
+    { caption: 'Opcional', color: themas.colors.blueLight }
 ];
-
+ 
 export const AuthProviderList = (props: any): any => {
+ 
     const modalizeRef = useRef<Modalize>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -24,24 +25,23 @@ export const AuthProviderList = (props: any): any => {
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
-    const [item, setItem] = useState (0);
+    const [item, setItem] = useState(0);
     const [taskList, setTaskList] = useState([]);
-
+ 
     const onOpen = () => {
         modalizeRef?.current?.open();
     }
-
     const onClose = () => {
         modalizeRef?.current?.close();
     }
-
+ 
     useEffect(() => {
         console.log(taskList.length)
-    }, [taskList]);
-
+    },[taskList]);
+ 
     const _renderFlags = () => {
         return (
-            flags.map ((item, index) => (
+            flags.map((item, index) => (
                 <TouchableOpacity key={index}
                     onPress={() => {
                         setSelectedFlag(item.caption)
@@ -56,63 +56,54 @@ export const AuthProviderList = (props: any): any => {
             ))
         )
     }
-
     const handleDateChange = (date) => {
         setSelectedDate(date);
     }
-
     const handleTimeChange = (date) => {
         setSelectedTime(date);
     }
-
     const handleSave = async () => {
-        
-         if (!title || !description || !selectedFlag) {
-               return Alert.alert('Atenção', 'Preenha os campos corretamente!'); 
+        if (!title || !description || !selectedFlag) {
+            return Alert.alert('Antenção', 'Preencha os campos corretamente!');
         }
-        
         try {
-        const newItem = {
-            item: Date.now(),
-            title,
-            description,
-            flags: selectedFlag,
-            timeLimite: new Date (
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate(),
-                selectedTime.getHours(),
-                selectedTime.getMinutes()
-            ).toISOString(), 
+            const newItem = {
+                item: Date.now(),
+                title,
+                description,
+                flags: selectedFlag,
+                timeLimite: new Date(
+                    selectedDate.getFullYear(),
+                    selectedDate.getMonth(),
+                    selectedDate.getDate(),
+                    selectedTime.getHours(),
+                    selectedTime.getMinutes()
+                ).toISOString(),
+            }
+ 
+            const storageData = await AsyncStorage.getItem('taskList');
+            // console.log(storageData)
+            let taskList = storageData ? JSON.parse(storageData) : [];
+            taskList.push(newItem);
+            await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
+ 
+            setTaskList(taskList),
+            setData(),
+            onClose
+ 
+        } catch (error) {
+            console.log("Error ao salvar o item", error)
         }
-
-        const storageData = await AsyncStorage.getItem('taskList');
-        //console.log(storageData)
-        let taskList = storageData ? JSON.parse (storageData) : [];
-        taskList.push(newItem);
-
-        await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
-
-        setTaskList(taskList),
-        setData()
-        onClose()
-
-    } catch (error) {
-        console.log("Erro ao salvar o item", error)
     }
-
-    }
-
     const setData = () => {
-        setTitle(''),
+        setTitle('')
         setDescription(''),
         setSelectedFlag('Urgente'),
         setItem(0)
         setSelectedDate(new Date())
         setSelectedTime(new Date())
     }
-
-
+ 
     const _container = () => {
         return (
             <KeyboardAvoidingView
@@ -121,24 +112,23 @@ export const AuthProviderList = (props: any): any => {
             >
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => onClose()}>
-                        <MaterialIcons 
+                        <MaterialIcons
                             name="close"
                             size={30}
                         />
                     </TouchableOpacity>
-
-                    <Text style={styles.title}>Criar Tarefa</Text>
-
+ 
+                    <Text style={styles.title}>Criar tarefa</Text>
+ 
                     <TouchableOpacity onPress={() => handleSave()}>
                         <AntDesign
                             name="check"
                             size={30}
                         />
                     </TouchableOpacity>
-
                 </View>
                 <View style={styles.content}>
-                    <Input 
+                    <Input
                         title="Título"
                         labelStyle={styles.label}
                         value={title}
@@ -155,13 +145,13 @@ export const AuthProviderList = (props: any): any => {
                         textAlignVertical="top"
                     />
                 </View>
-                <View style={{width: '40%'}}>
-                    {/*<Input 
-                        title="Tempo Limite"
+                <View style={{ width: '40%' }}>
+                    {/* <Input
+                        title="Tempo Limite:"
                         labelStyle={styles.label}
-                    />*/}
-                    <View style={{flexDirection: 'row', gap: 10, width: '100%'}}>
-                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{width: 200}}>
+                    /> */}
+                    <View style={{ flexDirection: 'row', gap: 10, width: '100%' }}>
+                        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={{ width: 200 }}>
                             <Input
                                 title="Data Limite"
                                 labelStyle={styles.label}
@@ -170,8 +160,8 @@ export const AuthProviderList = (props: any): any => {
                                 onPress={() => setShowDatePicker(true)}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width: 120}} onPress={() => setShowTimePicker(true)}>
-                            <Input 
+                        <TouchableOpacity style={{ width: 120 }} onPress={() => setShowTimePicker(true)}>
+                            <Input
                                 title="Hora Limite"
                                 labelStyle={styles.label}
                                 editable={false}
@@ -180,13 +170,13 @@ export const AuthProviderList = (props: any): any => {
                             />
                         </TouchableOpacity>
                     </View>
-                    <CustomDateTimePicker 
+                    <CustomDateTimePicker
                         onDateChange={handleDateChange}
                         setShow={setShowDatePicker}
                         show={showDatePicker}
                         type={'date'}
                     />
-                    <CustomDateTimePicker 
+                    <CustomDateTimePicker
                         onDateChange={handleTimeChange}
                         setShow={setShowTimePicker}
                         show={showTimePicker}
@@ -203,25 +193,25 @@ export const AuthProviderList = (props: any): any => {
         )
     }
     return (
-        <AuthContextList.Provider value = {{ onOpen, taskList }}>
+        <AuthContextList.Provider value={{ onOpen, taskList }}>
             {props.children}
-            <Modalize 
-            ref={modalizeRef}
-            //modalHeight={Dimensions.get('window').height / 1.3}
-            childrenStyle= {{height: Dimensions.get('window').height / 1.3}}
-            adjustToContentHeight={true}
+            <Modalize
+                ref={modalizeRef}
+                // modalHeight={Dimensions.get('window').height / 1.3}
+                childrenStyle={{ height: Dimensions.get('window').height / 1.3 }}
+                adjustToContentHeight={true}
             >
-            {_container()}
+                {_container()}
             </Modalize>
         </AuthContextList.Provider>
     )
 }
-
+ 
 export const useAuth = () => useContext(AuthContextList);
 export const styles = StyleSheet.create({
     container: {
         width: '100%',
-    }, 
+    },
     header: {
         width: '100%',
         height: 40,
@@ -229,7 +219,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 20,
         justifyContent: 'space-between',
-        alignItems:'center'
+        alignContent: 'center'
     },
     title: {
         fontSize: 20,
@@ -238,11 +228,11 @@ export const styles = StyleSheet.create({
     content: {
         width: '100%',
         paddingHorizontal: 20
-    }, 
+    },
     containerFlag: {
         width: '100%',
         padding: 10
-    }, 
+    },
     label: {
         fontWeight: 'bold',
         color: '#000'

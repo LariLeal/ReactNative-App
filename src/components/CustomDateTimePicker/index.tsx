@@ -1,23 +1,23 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Modal, Platform, View } from "react-native";
-import {style} from "./styles"
-
-const CustomDateTimePicker = ({type, onDateChange, show, setShow}) => {
-    const [date, setdate] = useState (new Date());
-
+import { style } from "./styles";
+ 
+const CustomDateTimePicker = ({ type, onDateChange, show, setShow }) => {
+    const [date, setDate] = useState(new Date());
+ 
     useEffect(() => {
         if (onDateChange) {
             onDateChange(date)
         }
     }, [date, onDateChange])
-    
+ 
     const onChange = (event, selectDate) => {
         const currentDate = selectDate || date;
-        setImmediate(currentDate);
-        setShow(false);
+        setDate(currentDate);
+        setShow(false);//Oculta o picker após a seleção
     }
-
+ 
     return (
         <Modal
             transparent={true}
@@ -28,18 +28,18 @@ const CustomDateTimePicker = ({type, onDateChange, show, setShow}) => {
                 <View style={[
                     style.container,
                     Platform.OS == 'android' && {backgroundColor: 'transparent'}
-
+                   
                     ]}>
-                    <DateTimePicker 
-                    value={date}
-                    mode={type}
-                    display={Platform.OS === 'ios' ? 'inline' : 'default'}
-                    onChange={onChange}
+                    <DateTimePicker
+                        value={date}
+                        mode={type}
+                        display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                        onChange={onChange}
                     />
                 </View>
             </View>
         </Modal>
     )
 }
-
+ 
 export default CustomDateTimePicker
