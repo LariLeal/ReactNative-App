@@ -8,16 +8,16 @@ import { Flag } from "../components/Flag";
 import CustomDateTimePicker from "../components/CustomDateTimePicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
- 
+
 export const AuthContextList: any = createContext({});
- 
+
 const flags = [
     { caption: 'Urgente', color: themas.colors.red },
     { caption: 'Opcional', color: themas.colors.blueLight }
 ];
- 
+
 export const AuthProviderList = (props: any): any => {
- 
+
     const modalizeRef = useRef<Modalize>(null);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -28,18 +28,18 @@ export const AuthProviderList = (props: any): any => {
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [item, setItem] = useState(0);
     const [taskList, setTaskList] = useState([]);
- 
+
     const onOpen = () => {
         modalizeRef?.current?.open();
     }
     const onClose = () => {
         modalizeRef?.current?.close();
     }
- 
+
     useEffect(() => {
         get_taskList()
-    },[]);
- 
+    }, []);
+
     const _renderFlags = () => {
         return (
             flags.map((item, index) => (
@@ -81,17 +81,17 @@ export const AuthProviderList = (props: any): any => {
                     selectedTime.getMinutes()
                 ).toISOString(),
             }
- 
+
             const storageData = await AsyncStorage.getItem('taskList');
             // console.log(storageData)
             let taskList = storageData ? JSON.parse(storageData) : [];
             taskList.push(newItem);
             await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
- 
+
             setTaskList(taskList),
-            setData(),
-            onClose
- 
+                setData(),
+                onClose
+
         } catch (error) {
             console.log("Error ao salvar o item", error)
         }
@@ -99,12 +99,12 @@ export const AuthProviderList = (props: any): any => {
     const setData = () => {
         setTitle('')
         setDescription(''),
-        setSelectedFlag('Urgente'),
-        setItem(0)
+            setSelectedFlag('Urgente'),
+            setItem(0)
         setSelectedDate(new Date())
         setSelectedTime(new Date())
     }
- 
+
     async function get_taskList() {
         try {
             const storageData = await AsyncStorage.getItem('taskList');
@@ -112,6 +112,20 @@ export const AuthProviderList = (props: any): any => {
             setTaskList(taskList)
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handleDelete = async (itemToDelete) => {
+        try {
+            const StorageData = await AsyncStorage.getItem('taskList')
+            const taskList: Array<any> = StorageData ? JSON.parse(StorageData) : []
+
+            const updatedTaskList = taskList.filter(item => item.item !== itemToDelete.item)
+
+            await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList))
+            setTaskList(updatedTaskList)
+        } catch (error) {
+            console.log("Erro ao excluir o item", error)
         }
     }
 
@@ -128,9 +142,9 @@ export const AuthProviderList = (props: any): any => {
                             size={30}
                         />
                     </TouchableOpacity>
- 
+
                     <Text style={styles.title}>Criar tarefa</Text>
- 
+
                     <TouchableOpacity onPress={() => handleSave()}>
                         <AntDesign
                             name="check"
@@ -204,7 +218,7 @@ export const AuthProviderList = (props: any): any => {
         )
     }
     return (
-        <AuthContextList.Provider value={{ onOpen, taskList }}>
+        <AuthContextList.Provider value={{ onOpen, taskList, handleDelete }}>
             {props.children}
             <Modalize
                 ref={modalizeRef}
@@ -217,7 +231,7 @@ export const AuthProviderList = (props: any): any => {
         </AuthContextList.Provider>
     )
 }
- 
+
 export const useAuth = () => useContext(AuthContextList);
 export const styles = StyleSheet.create({
     container: {
