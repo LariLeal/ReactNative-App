@@ -14,6 +14,7 @@ export default function BottomRoutes() {
                     headerShown: false
                  }}
                 tabBar={props => <CustomTabBar {...props} />}
+                initialRoutesName='List'
             >
                 <Tab.Screen 
                     name="List"
