@@ -28,7 +28,8 @@ export const AuthProviderList = (props: any): any => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [item, setItem] = useState(0);
-    const [taskList, setTaskList] = useState([]);
+    const [taskList, setTaskList] = useState<Array<PropCard>>([]);
+    const [taskListBackup, setTaskListBackup] = useState([]);
 
     const onOpen = () => {
         modalizeRef?.current?.open();
@@ -84,7 +85,7 @@ export const AuthProviderList = (props: any): any => {
             }
 
             const storageData = await AsyncStorage.getItem('taskList');
-            // console.log(storageData)
+           
             let taskList: Array<any> = storageData ? JSON.parse(storageData) : [];
 
             const itemIndex = taskList.findIndex((task) => task.item === newItem.item)
@@ -97,9 +98,10 @@ export const AuthProviderList = (props: any): any => {
 
             await AsyncStorage.setItem('taskList', JSON.stringify(taskList))
 
-            setTaskList(taskList),
-                setData(),
-                onClose
+            setTaskList(taskList)
+            setTaskListBackup(taskList)
+            setData()
+            onClose
 
         } catch (error) {
             console.log("Error ao salvar o item", error)
@@ -119,6 +121,7 @@ export const AuthProviderList = (props: any): any => {
             const storageData = await AsyncStorage.getItem('taskList');
             const taskList = storageData ? JSON.parse(storageData) : []
             setTaskList(taskList)
+            setTaskListBackup(taskList)
         } catch (error) {
             console.log(error)
         }
@@ -133,6 +136,7 @@ export const AuthProviderList = (props: any): any => {
 
             await AsyncStorage.setItem('taskList', JSON.stringify(updatedTaskList))
             setTaskList(updatedTaskList)
+            setTaskListBackup(taskList)
         } catch (error) {
             console.log("Erro ao excluir o item", error)
         }
@@ -152,6 +156,28 @@ export const AuthProviderList = (props: any): any => {
             onOpen()
         } catch (error) {
             console.log('Erro ao editar')
+        }
+    }
+
+    const filter = (t: string) => {
+        const array = taskListBackup
+        const campos = ['title', 'description']
+
+        if (t) {
+            // Limpar espacos e letra maiuscula ignorada na hora de procurar
+            const searchTerm = t.trim().toLowerCase();
+            const FilteredArray = array.filter((item) => {
+                for (let i = 0; i < campos.length; i++) {
+                    // Ele busca com é digitado e acha ignorando uppercase e espacos,
+                    // Busca exatamente como esta
+                    if (item[campos[i]].trim().toLowerCase().includes(searchTerm))
+                        return true
+                }
+            })
+
+            setTaskList(FilteredArray)
+        } else {
+            setTaskList(array)
         }
     }
 
@@ -244,7 +270,7 @@ export const AuthProviderList = (props: any): any => {
         )
     }
     return (
-        <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit }}>
+        <AuthContextList.Provider value={{ onOpen, taskList, handleDelete, handleEdit, filter }}>
             {props.children}
             <Modalize
                 ref={modalizeRef}
