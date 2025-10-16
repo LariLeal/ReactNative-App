@@ -2,62 +2,87 @@ import { StyleSheet, Dimensions } from "react-native";
 import {themas} from "../../global/themes";
 
 export const style = StyleSheet.create({
+    scroll: {
+        flexGrow: 1,
+        backgroundColor: themas.colors.bigScreen
+    },
     container: {
         flex: 1,
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 40,
-        paddingHorizontal: 20,
-        backgroundColor: '#f8f8f8'
+        paddingTop: 50,
+        paddingHorizontal: 20
     },
-    title: {
+    profileImage: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        borderWidth: 3,
+        borderColor: themas.colors.primary,
+        marginBottom: 10
+    },
+    name: {
         fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 30
+        fontWeight: "bold",
+        color: themas.colors.primary,
+        marginBottom: 20
     },
-    inputGroup: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 8,
-        paddingHorizontal: 10,
-        marginBottom: 15,
-        width: '100%',
-        height: 50
+    inputArea: {
+        width: "100%",
+        backgroundColor: themas.colors.secondary,
+        borderRadius: 10,
+        padding: 20,
+        elevation: 3
     },
-    input: {
-        flex: 1,
-        marginLeft: 10,
+    label: {
         fontSize: 16,
-        color: '#333'
-    },
-    divider: {
-        width: '80%',
-        height: 1,
-        backgroundColor: '#ddd',
-        marginVertical: 20
-    },
-    infoSection: {
-        width: '100%'
-    },
-    saveButton: {
-        backgroundColor: '#2563eb',
-        paddingVertical: 12,
-        paddingHorizontal: 25,
-        borderRadius: 8,
+        fontWeight: "600",
+        color: themas.colors.gray,
         marginTop: 10
     },
-    saveButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16
+    input: {
+        width: "100%",
+        backgroundColor: themas.colors.lightGray,
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 5
+    },
+    dateButton: {
+        width: "100%",
+        backgroundColor: themas.colors.lightGray,
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 5
+    },
+    dateText: {
+        fontSize: 16,
+        color: themas.colors.gray
     },
     logoutButton: {
         position: 'absolute',
-        bottom: 20,
-        right: 20
+        bottom: 40,
+        right: 40,
+        backgroundColor: themas.colors.secondary,
+        borderRadius: 50,
+        padding: 10,
+        elevation: 4,
+        borderWidth: 1,
+        borderColor: themas.colors.lightGray
+       
+    },
+    saveButton: {
+        backgroundColor: themas.colors.primary,
+        padding: 15,
+        borderRadius: 10,
+        alignItems: "center",
+        marginVertical: 15
+    },
+    saveButtonText: {
+        color: themas.colors.bigScreen,
+        fontWeight: "bold",
+        fontSize: 16
     }
 })
